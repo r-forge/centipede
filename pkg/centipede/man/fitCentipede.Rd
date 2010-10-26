@@ -104,8 +104,8 @@ A list containing elements:
 \author{Roger Pique-Regi and Jacob Degner} 
 \examples{ 
 #GETS EXAMPLE DATA FOR NRSF
-data(NRSFcuts, package='Centipede2')
-data(NRSF_Anno, package='Centipede2')
+data(NRSFcuts, package='CENTIPEDE')
+data(NRSF_Anno, package='CENTIPEDE')
 
 #FITS THE CENTIPEDE MODEL
 centFit <- fitCentipede(Xlist = list(as.matrix(NRSFcuts)), Y=cbind(rep(1, dim(NRSF_Anno)[1]), NRSF_Anno[,5], NRSF_Anno[,6]))
