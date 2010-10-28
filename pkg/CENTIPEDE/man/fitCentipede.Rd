@@ -1,14 +1,21 @@
 \name{fitCentipede} 
 \alias{fitCentipede} 
 \title{CENTIPEDE core function} 
-\description{Fit the Centipede algorithm described in Pique-Regi, Degner, et al. (submitted).} 
+\description{Fit the Centipede model} 
 \usage{ 
 fitCentipede(Xlist,Y, LambdaParList, BetaLogit, NegBinParList, sweeps=50,DampLambda=0.0,DampNegBin=0.0,TrimP=0.0001,NRiter=5) 
 } 
 \arguments{ 
-\item{Xlist}{A list of data-matrices representing discrete counts around candidate binding sites (e.g., DNaseI-seq, ChIP-seq for histone modifications, ...).  Each matrix in this list should have a row for each candidate binding site.  Numbers of columns may vary.} 
-\item{Y}{A design matrix for logistic-prior component of CENTIPEDE model.  Each row corresponds to a candidate site.  Each column represents a score (e.g., conservation, distance to TSS) for that candidate site.  Use a column of 1s to fit an intercept term.} 
-\item{LambdaParList}{An optional list matching the length of Xlist where starting values of Lambda parameters can be specified.} 
+\item{Xlist}{A list of data-matrices representing discrete counts around
+  candidate binding sites (e.g., DNaseI-seq, ChIP-seq for histone
+  modifications, ...). Each matrix in this list should have a row for
+  each candidate binding site.  Numbers of columns may vary.} 
+\item{Y}{A design matrix for logistic-prior component of CENTIPEDE
+  model.  Each row corresponds to a candidate site. Each column
+  represents a score (e.g., conservation, distance to TSS) for that
+  candidate site.  Use a column of 1s to fit an intercept term.} 
+\item{LambdaParList}{An optional list matching the length of Xlist where
+  starting values of Lambda parameters can be specified.} 
 \item{BetaLogit}{An optional vector matching the columns of Y where starting values of Beta parameters of the logistic can be specified.} 
 \item{NegBinParList}{An optional list matching the length of Xlist where starting values of each negative binomial distribution can be specified.}
 \item{sweeps}{Maximum number of EM iterations to attempt.}
@@ -101,20 +108,27 @@ A list containing elements:
 \item{LogLikEnd}{Final log-likelihood  of the data given the final model}
 \item{NumIter}{The number of iterations EM algorithm took to converge}
 } 
-\author{Roger Pique-Regi and Jacob Degner} 
+
+\references{
+  Roger Pique-Regi, Jacob F. Degner, Athma A. Pai, Daniel J. Gaffney,
+  Yoav Gilad, Jonathan K. Pritchard. "Accurate inference of
+  transcription factor binding from DNA sequence and chromatin
+  accessibility data", Genome Research, Submitted Aug 2010  
+}
+
 \examples{ 
 #GETS EXAMPLE DATA FOR NRSF
 data(NRSFcuts, package='CENTIPEDE')
 data(NRSF_Anno, package='CENTIPEDE')
 
 #FITS THE CENTIPEDE MODEL
-centFit <- fitCentipede(Xlist = list(as.matrix(NRSFcuts)), Y=cbind(rep(1, dim(NRSF_Anno)[1]), NRSF_Anno[,5], NRSF_Anno[,6]))
+centFit <- fitCentipede(Xlist = list(DNase=as.matrix(NRSFcuts)), Y=cbind(rep(1, dim(NRSF_Anno)[1]), NRSF_Anno[,5], NRSF_Anno[,6]))
 
 #PLOTS IMAGE OF CUTSITES RANKED BY CENTIPEDE POSTERIORS
 imageCutSites(NRSFcuts[order(centFit$PostPr),][c(1:100, (dim(NRSFcuts)[1]-100):(dim(NRSFcuts)[1])),])
 
 #PLOT ESTIMATED FOOTPRINT
-plotProfile(centFit$LambdaParList[[1]])
+plotProfile(centFit$LambdaParList[[1]],Mlen=21)
 
 } 
 \keyword{centipede} 
