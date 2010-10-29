@@ -1,4 +1,4 @@
-imageCutSites <- function (data,main="",xlab=""){
+imageCutSites <- function (data,main="",xlab= "Dist. to motif (bp)"){
   data <- t(as.matrix(data));
   data[data>7] <- 7;
   data[data<0] <- 0;
@@ -9,7 +9,7 @@ imageCutSites <- function (data,main="",xlab=""){
   legend("bottomright",bg="white",c("0","1","2","3","4","5","6",">6"),fill=c("white","darkblue","darkgreen","green","orange","yellow","red","darkred"))
 }
 
-imageCutSitesCombined <- function (data,main="",xlab="",breaks){
+imageCutSitesCombined <- function (data,main="",xlab= "Dist. to motif (bp)",breaks){
   S <- dim(data)[2];
   data <- data[,1:(S/2)]+data[,(S/2+1):S];
   profile <- colMeans(data);
@@ -21,7 +21,7 @@ imageCutSitesCombined <- function (data,main="",xlab="",breaks){
     #breaks=breaks=c(0,1,2,4,8,16,32,64,1E9)
     breaks=c(0:7,1E9)
   }
-  data <- cut(data,breaks=breaks,right=F);
+  data <- cut(data,breaks=breaks,right=FALSE);
   myColors <- colorRampPalette(c(rgb(1,1,1),rgb(0,0,1),rgb(0,0,.2)))(length(breaks)-1);  
   myNames <- levels(data);
   data <- matrix(as.numeric(data)-1,dd)
